@@ -76,6 +76,16 @@ func handleData(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(displayEntries)
 }
 
+func handleCounter(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	mu.RLock()
+	currentCounter := counter
+	mu.RUnlock()
+
+	json.NewEncoder(w).Encode(map[string]int{"counter": currentCounter})
+}
+
 func handleRoot(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	fmt.Fprint(w, htmlContent)
@@ -84,6 +94,7 @@ func handleRoot(w http.ResponseWriter, r *http.Request) {
 func main() {
 	http.HandleFunc("/", handleRoot)
 	http.HandleFunc("/api/data", handleData)
+	http.HandleFunc("/api/counter", handleCounter)
 
 	addr := "0.0.0.0:8080"
 	log.Printf("Starting server on %s", addr)
@@ -287,10 +298,25 @@ const htmlContent = `<!DOCTYPE html>
             },
             mounted() {
                 this.fetchData();
-                // Refresh every 20 seconds
-                setInterval(() => {
+                // Check counter and refresh every 5 seconds if needed
+                setInterval(async () => {
+                    try {
+                        const response = await fetch('/api/counter');
+                        if (response.ok) {
+                            const data = await response.json();
+                            // Check if counter is a multiple of 20 (and greater than 0)
+                            if (data.counter > 0 && data.counter % 20 === 0) {
+                                // Refresh the page
+                                location.reload();
+                                return;
+                            }
+                        }
+                    } catch (error) {
+                        console.error('Error fetching counter:', error);
+                    }
+                    // Fetch data if page wasn't refreshed
                     this.fetchData();
-                }, 20000);
+                }, 5000);
             }
         }).mount('#app');
     </script>
