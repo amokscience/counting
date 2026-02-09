@@ -67,10 +67,10 @@ func handleData(w http.ResponseWriter, r *http.Request) {
 	mu.RLock()
 	defer mu.RUnlock()
 
-	// Return the first 50 entries (most recent)
+	// Return the first 25 entries (most recent)
 	displayEntries := entries
-	if len(entries) > 50 {
-		displayEntries = entries[:50]
+	if len(entries) > 25 {
+		displayEntries = entries[:25]
 	}
 
 	json.NewEncoder(w).Encode(displayEntries)
@@ -214,7 +214,7 @@ const htmlContent = `<!DOCTYPE html>
             <h1>📊 Running Counter</h1>
             <div class="refresh-info">
                 <span class="status-badge">● Live</span>
-                <p style="margin: 10px 0 0 0;">Auto-refreshes every 20 seconds • Showing last 50 of {{ totalEntries }} entries</p>
+                <p style="margin: 10px 0 0 0;">Auto-refreshes every 20 seconds • Showing last 25 of {{ totalEntries }} entries</p>
             </div>
         </div>
 
@@ -298,7 +298,7 @@ const htmlContent = `<!DOCTYPE html>
             },
             mounted() {
                 this.fetchData();
-                // Check counter and refresh every 5 seconds if needed
+                // Check counter and refresh every 20 seconds if needed
                 setInterval(async () => {
                     try {
                         const response = await fetch('/api/counter');
@@ -316,7 +316,7 @@ const htmlContent = `<!DOCTYPE html>
                     }
                     // Fetch data if page wasn't refreshed
                     this.fetchData();
-                }, 5000);
+                }, 20000);
             }
         }).mount('#app');
     </script>
