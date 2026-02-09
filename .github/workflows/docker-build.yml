@@ -46,7 +46,7 @@ jobs:
           SHORT_SHA=${SHORT_SHA:0:7}
           
           # Update values-dev.yaml with new image tag
-          sed -i "s/tag: \"dev-.*/tag: \"dev-${SHORT_SHA}\"/" counting/helm/values-dev.yaml
+          sed -i "s/tag: dev-.*/tag: dev-${SHORT_SHA}/" counting/helm/values-dev.yaml
           # Check if there are changes
           if git diff --quiet; then
             echo "No changes to commit"
