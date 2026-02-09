@@ -56,8 +56,8 @@ func addNewEntry() {
 	entries = append([]Entry{entry}, entries...)
 
 	// Keep only the last 90 entries
-	if len(entries) > 90 {
-		entries = entries[:90]
+	if len(entries) > 100 {
+		entries = entries[:100]
 	}
 }
 
