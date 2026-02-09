@@ -211,7 +211,7 @@ const htmlContent = `<!DOCTYPE html>
 <body>
     <div id="app">
         <div class="header">
-            <h1> 📊 Running Counter </h1>
+            <h1>📊 Running Counter</h1>
             <div class="refresh-info">
                 <span class="status-badge">● Live</span>
                 <p style="margin: 10px 0 0 0;">Auto-refreshes every 20 seconds • Showing last 25 of {{ totalEntries }} entries</p>
