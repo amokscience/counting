@@ -39,7 +39,7 @@ jobs:
         if: success() && github.event_name != 'pull_request' && github.ref == 'refs/heads/dev'
         run: |
           git clone https://github.com/amokscience/argo-apps.git
-          cd gitops
+          cd argo-apps
           
           # Get short SHA (first 7 chars, matching DockerHub's display)
           SHORT_SHA=${{ github.sha }}
