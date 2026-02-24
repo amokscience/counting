@@ -64,7 +64,7 @@ jobs:
   promote:
     needs: build
     runs-on: ubuntu-latest
-    if: success()
+    if: false # disabled: branch promotions turned off
     
     steps:
       - name: Checkout repository
